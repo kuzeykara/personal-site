@@ -1,0 +1,86 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const skills = [
+  "Penetration Testing",
+  "Network Security",
+  "Malware Analysis",
+  "Web Security",
+  "C",
+  "Python",
+  "Linux",
+  "Docker",
+  "Wireshark",
+  "Burp Suite"
+];
+---
+
+<Layout title="About — kuzeykara" description="About me — cybersecurity engineer, researcher, and builder.">
+  <section class="max-w-3xl mx-auto px-4 sm:px-6 pt-16 pb-20">
+    <h1 class="text-3xl md:text-4xl mb-8">About Me</h1>
+
+    <div class="space-y-4 text-text-muted leading-relaxed mb-12">
+      <p>
+        I'm Kuzey, a Cybersecurity Engineering Masters student with a focus on offensive security and malware analysis.
+      </p>
+      <p>
+      I have a degree in Computer Engineering, but I always had an interest in cybersecurity. In 2025, I finally decided to take a leap of faith and turn my interest into a career through a long learning journey, starting with getting into my current MSc.
+      </p>
+      <p>
+        Outside of cybersecurity, I enjoy playing and making games, including tabletop games. I play guitar, enjoy music, and play football. I also like to travel when I can afford it!
+      </p>
+      <p>
+        This site serves as my portfolio, a place to document projects and share my learning journey.
+      </p>
+    </div>
+
+    <!-- Optional: Skills list
+    <h2 class="text-2xl mb-4">Skills &amp; Tools</h2>
+    <div class="flex flex-wrap gap-2 mb-12">
+      {skills.map((skill) => (
+        <span class="font-mono text-xs px-3 py-1.5 rounded border border-border text-text-muted hover:border-accent-dim hover:text-accent transition-colors duration-200">
+          {skill}
+        </span>
+      ))}
+    </div>
+    -->
+
+    <!-- Optional: CV link
+    <h2 class="text-2xl mb-4">CV</h2>
+    <div class="mb-12">
+      <p class="text-text-muted text-sm mb-4">
+        Download my CV for a full overview of my education, experience, and skills.
+      </p>
+      <a
+        href="/cv.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-block font-mono text-sm px-5 py-2.5 border border-accent text-accent rounded hover:bg-accent hover:text-bg transition-colors duration-200 no-underline"
+      >
+        Download CV (.pdf)
+      </a>
+    </div>
+    -->
+
+    <h2 class="text-2xl mb-4">Contact</h2>
+    <div class="space-y-3">
+      <div class="flex items-center gap-3">
+        <svg class="w-4 h-4 text-accent shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+        </svg>
+        <a href="mailto:kuzeykara@protonmail.com" class="font-mono text-sm text-text-muted hover:text-accent no-underline">
+          kuzeykara@protonmail.com
+        </a>
+      </div>
+      <div class="flex items-center gap-3">
+        <svg class="w-4 h-4 text-accent shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286ZM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065Zm1.782 13.019H3.555V9h3.564v11.452ZM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003Z"/>
+        </svg>
+        <a href="https://www.linkedin.com/in/kuzey-kara/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-text-muted hover:text-accent no-underline">
+          linkedin.com/in/kuzey-kara
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

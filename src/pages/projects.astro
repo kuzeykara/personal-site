@@ -1,0 +1,27 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+
+const projects = await getCollection("projects");
+---
+
+<Layout title="Projects — kuzeykara" description="Security tools, research projects, and open-source contributions.">
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 pt-16 pb-20">
+    <h1 class="text-3xl md:text-4xl mb-2">Projects</h1>
+    <p class="text-text-muted mb-8">
+      Research projects, reports, and miscellaneous. Work in progress!
+    </p>
+    <div class="grid gap-4 md:grid-cols-2">
+      {projects.map((project) => (
+        <ProjectCard
+          title={project.data.title}
+          description={project.data.description}
+          tags={project.data.tags}
+          url={project.data.url}
+          repo={project.data.repo}
+        />
+      ))}
+    </div>
+  </section>
+</Layout>

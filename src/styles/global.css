@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "Fira Code", monospace;
+
+  --color-bg: #0a0a0a;
+  --color-bg-card: #141414;
+  --color-bg-nav: rgba(10, 10, 10, 0.85);
+  --color-text: #e5e5e5;
+  --color-text-muted: #737373;
+  --color-accent: #22d3ee;
+  --color-accent-dim: #0e7490;
+  --color-border: #262626;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-bg text-text font-sans min-h-screen m-0;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-mono font-semibold tracking-tight;
+  }
+
+  code, pre {
+    @apply font-mono;
+  }
+
+  a {
+    @apply text-accent transition-colors duration-200 hover:text-accent-dim;
+  }
+
+  /* Prose styling for blog content */
+  .prose {
+    @apply text-text leading-relaxed max-w-none;
+  }
+
+  .prose h1 { @apply text-3xl md:text-4xl mt-10 mb-4 text-text; }
+  .prose h2 { @apply text-2xl md:text-3xl mt-8 mb-3 text-text; }
+  .prose h3 { @apply text-xl md:text-2xl mt-6 mb-2 text-text; }
+  .prose p { @apply mb-4; }
+  .prose ul, .prose ol { @apply mb-4 pl-6; }
+  .prose ul { @apply list-disc; }
+  .prose ol { @apply list-decimal; }
+  .prose li { @apply mb-1; }
+  .prose blockquote {
+    @apply border-l-2 border-accent pl-4 italic text-text-muted my-4;
+  }
+  .prose pre {
+    @apply bg-bg-card rounded-lg p-4 overflow-x-auto my-4 border border-border text-sm;
+  }
+  .prose code:not(pre code) {
+    @apply bg-bg-card px-1.5 py-0.5 rounded text-accent text-sm;
+  }
+  .prose img { @apply rounded-lg my-6; }
+  .prose hr { @apply border-border my-8; }
+  .prose a { @apply text-accent underline underline-offset-2 hover:text-accent-dim; }
+  .prose strong { @apply text-text font-semibold; }
+}
