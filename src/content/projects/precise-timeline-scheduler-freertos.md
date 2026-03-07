@@ -4,8 +4,12 @@ description: "A deterministic, timeline-driven scheduler that replaces the stand
 tags: ["freertos", "scheduler", "real-time", "embedded", "c"]
 # repo: "https://github.com/"
 # url: "https://example.com"
+# relatedPosts: ["hello-world"]
 featured: true
+draft: false
 ---
+
+## Overview
 
 This project implements a deterministic, timeline-driven scheduler that replaces the standard FreeRTOS priority-based preemption model. Designed for time-critical applications, it enforces a Time-Triggered Architecture (TTA) where tasks execute within strict time windows (Sub-frames) inside a repeating cycle (Major Frame).
 

@@ -3,18 +3,21 @@ interface Props {
   title: string;
   description: string;
   tags: string[];
+  slug: string;
   url?: string;
   repo?: string;
 }
 
-const { title, description, tags, url, repo } = Astro.props;
+const { title, description, tags, slug, url, repo } = Astro.props;
 ---
 
 <article class="group border border-border rounded-lg p-5 bg-bg-card hover:border-accent-dim transition-colors duration-200">
-  <h3 class="text-lg mb-2 text-text group-hover:text-accent transition-colors duration-200">
-    {title}
-  </h3>
-  <p class="text-text-muted text-sm mb-4 leading-relaxed">{description}</p>
+  <a href={`/projects/${slug}`} class="no-underline block">
+    <h3 class="text-lg mb-2 text-text group-hover:text-accent transition-colors duration-200">
+      {title}
+    </h3>
+    <p class="text-text-muted text-sm mb-4 leading-relaxed">{description}</p>
+  </a>
   <div class="flex flex-wrap gap-2 mb-4">
     {tags.map((tag) => (
       <span class="font-mono text-xs px-2 py-0.5 rounded bg-bg border border-border text-text-muted">
@@ -22,13 +25,13 @@ const { title, description, tags, url, repo } = Astro.props;
       </span>
     ))}
   </div>
-  <div class="flex gap-3">
+  <div class="flex gap-3 flex-wrap">
     {repo && (
       <a
         href={repo}
         target="_blank"
         rel="noopener noreferrer"
-        class="font-mono text-xs text-accent hover:text-accent-dim no-underline"
+        class="font-mono text-xs text-text-muted hover:text-accent no-underline"
       >
         [source]
       </a>
@@ -38,7 +41,7 @@ const { title, description, tags, url, repo } = Astro.props;
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        class="font-mono text-xs text-accent hover:text-accent-dim no-underline"
+        class="font-mono text-xs text-text-muted hover:text-accent no-underline"
       >
         [live]
       </a>

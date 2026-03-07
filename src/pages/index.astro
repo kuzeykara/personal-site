@@ -20,7 +20,7 @@ const recentPosts = allPosts
       kuzey<span class="caret inline-block w-0.5 h-[1em] bg-accent align-middle ml-1"></span>
     </h1>
     <p class="text-lg md:text-xl text-text-muted max-w-2xl leading-relaxed mb-8">
-      I'm a Cybersecurity Engineering Masters student. I try to share what I learn throughout my journey in cyberspace.
+      Cybersecurity Engineer focused on continuous learning. I share my CTF write-ups, research, and projects as I grow in the field.
     </p>
     <div class="flex gap-3">
       <a
@@ -47,6 +47,7 @@ const recentPosts = allPosts
             title={project.data.title}
             description={project.data.description}
             tags={project.data.tags}
+            slug={project.id}
             url={project.data.url}
             repo={project.data.repo}
           />

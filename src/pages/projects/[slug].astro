@@ -1,0 +1,94 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects", ({ data }) => !data.draft);
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const relatedSlugs = project.data.relatedPosts ?? [];
+const blogPosts = await getCollection("blog", ({ data }) => !data.draft);
+const relatedPostList = relatedSlugs.map((slug) => {
+  const post = blogPosts.find((p) => p.id === slug);
+  return post ? { slug: post.id, title: post.data.title } : { slug, title: slug };
+});
+---
+
+<Layout title={`${project.data.title} — kuzeykara`} description={project.data.description}>
+  <article class="max-w-3xl mx-auto px-4 sm:px-6 pt-16 pb-20">
+    <header class="mb-8">
+      <a
+        href="/projects"
+        class="font-mono text-xs text-text-muted hover:text-accent no-underline mb-4 inline-block"
+      >
+        &larr; Back to projects
+      </a>
+      <h1 class="text-3xl md:text-4xl mb-3">{project.data.title}</h1>
+      <div class="flex flex-wrap items-center gap-3 text-text-muted mb-4">
+        <div class="flex flex-wrap gap-2">
+          {project.data.tags.map((tag: string) => (
+            <span class="font-mono text-xs px-2 py-0.5 rounded bg-bg-card border border-border">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+      {(project.data.repo || project.data.url) && (
+        <div class="flex flex-wrap gap-3">
+          {project.data.repo && (
+            <a
+              href={project.data.repo}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-mono text-sm px-4 py-2 border border-accent text-accent rounded hover:bg-accent hover:text-bg transition-colors duration-200 no-underline"
+            >
+              Source / Repo
+            </a>
+          )}
+          {project.data.url && (
+            <a
+              href={project.data.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="font-mono text-sm px-4 py-2 border border-accent text-accent rounded hover:bg-accent hover:text-bg transition-colors duration-200 no-underline"
+            >
+              Live / Demo
+            </a>
+          )}
+        </div>
+      )}
+      {relatedPostList.length > 0 && (
+        <div class="mt-4">
+          <p class="font-mono text-xs text-text-muted mb-2">
+            {relatedPostList.length === 1 ? "Related post" : "Related posts"}
+          </p>
+          <p class="font-mono text-sm m-0">
+            {relatedPostList.map(({ slug, title }, i) => (
+              <>
+                <a
+                  href={`/blog/${slug}`}
+                  class="text-accent hover:text-accent-dim no-underline"
+                >
+                  {title}
+                </a>
+                {i < relatedPostList.length - 1 && (
+                  <span class="text-text-muted mx-1.5" aria-hidden="true">·</span>
+                )}
+              </>
+            ))}
+          </p>
+        </div>
+      )}
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Layout>
