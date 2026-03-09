@@ -6,11 +6,11 @@ import ProjectCard from "../components/ProjectCard.astro";
 const projects = await getCollection("projects", ({ data }) => !data.draft);
 ---
 
-<Layout title="Projects — kuzeykara" description="Security tools, research projects, and open-source contributions.">
+<Layout title="Projects — kuzeykara" description="Research projects, reports, and miscellaneous.">
   <section class="max-w-5xl mx-auto px-4 sm:px-6 pt-16 pb-20">
     <h1 class="text-3xl md:text-4xl mb-2">Projects</h1>
     <p class="text-text-muted mb-8">
-      Research projects, reports, and miscellaneous. Work in progress!
+      Research projects, reports, and miscellaneous.
     </p>
     <div class="grid gap-4 md:grid-cols-2">
       {projects.map((project) => (
