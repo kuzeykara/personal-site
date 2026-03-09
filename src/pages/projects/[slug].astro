@@ -87,8 +87,14 @@ const relatedPostList = relatedSlugs.map((slug) => {
         </div>
       )}
     </header>
-    <div class="prose">
+    <div class="prose project-content">
       <Content />
     </div>
+    <script>
+      document.querySelectorAll(".project-content a[href^='http']").forEach((a) => {
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener noreferrer");
+      });
+    </script>
   </article>
 </Layout>

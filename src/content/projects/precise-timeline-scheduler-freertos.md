@@ -1,28 +1,41 @@
 ---
 title: "Precise Timeline Scheduler for FreeRTOS"
-description: "A deterministic, timeline-driven scheduler that replaces the standard FreeRTOS priority-based preemption model, designed for time-critical applications enforcing a Time-Triggered Architecture (TTA). (Source code coming soon.)"
+description: "A deterministic, timeline-driven scheduler that replaces the standard FreeRTOS priority-based preemption with a Time-Triggered Architecture (TTA). Includes JSON-based schedule generation, kernel hooks for precise time-keeping, and UART tracing for validation."
 tags: ["freertos", "scheduler", "real-time", "embedded", "c"]
-# repo: "https://github.com/"
-# url: "https://example.com"
-# relatedPosts: ["hello-world"]
+repo: "https://github.com/POOYASP2/precise_timeline_scheduler_for_FreeRTOS"
 featured: true
 draft: false
 ---
 
 ## Overview
 
-This project implements a deterministic, timeline-driven scheduler that replaces the standard FreeRTOS priority-based preemption model. Designed for time-critical applications, it enforces a Time-Triggered Architecture (TTA) where tasks execute within strict time windows (Sub-frames) inside a repeating cycle (Major Frame).
+This project implements a **deterministic, timeline-driven scheduler** for FreeRTOS that replaces the standard priority-based preemption model with a **Time-Triggered Architecture (TTA)**. Designed for time-critical embedded applications, the system governs task execution through a **static schedule defined at compile time**, so operations occur within strict time windows (Sub-frames) inside a globally repeating cycle (Major-frame), giving predictable and repeatable behavior.
 
-## Features
+The architecture supports a **hybrid task model**: **Hard Real-Time (HRT)** tasks run based on absolute start and end times and are terminated if they miss their deadline; **Soft Real-Time (SRT)** tasks run sequentially during idle periods within a sub-frame. A **Supervisor task** monitors execution and resets tasks that miss deadlines. The project includes a **JSON-based configuration tool** for auto-generating schedules, **custom FreeRTOS kernel hooks** for precise time-keeping, and a **lightweight tracing system** for validating performance via UART. Full architecture, kernel modifications, and API details are documented in the repository’s PDF: *Precise_Timeline_Scheduler_for_FreeRTOS.pdf*. The work was done as part of our *Operating Systems for Embedded Systems* course, in collaboration with [Giacomo Pessolano](), [Mohammad Tohidnia](https://github.com/mohammadTohidnia), [Muhammed Emir Akinci](https://github.com/emirakinci), and [Pooya Sharifi](https://github.com/POOYASP2).
 
-- Deterministic timing where execution is governed by a static schedule table defined at compile time.
+## Architecture
 
-- Frame-based architecture utilizing a Major Frame for the global cycle duration and Sub-Frames for smaller fixed slots.
+- **Major Frame / Sub-frames:** The global cycle (Major Frame) is divided into fixed-duration Sub-frames. Each sub-frame has a configurable duration (e.g. 100 ms). Tasks are assigned to sub-frames and, for HRT tasks, to start/end times relative to the sub-frame.
 
-- Hybrid task model supporting Hard Real-Time (HRT) tasks with strict deadlines that are terminated if missed, and Soft Real-Time (SRT) tasks that run sequentially in the idle time of a sub-frame.
+- **Task types and states:** Tasks are typed as `HARD_RT` or `SOFT_RT`. States are tracked as `TASK_NOT_STARTED`, `TASK_RUNNING`, `TASK_DONE`, or `TASK_DEADLINE_MISSED`. HRT tasks must start and end on schedule; if they overrun, they are killed and the scheduler can start the next scheduled task. SRT tasks execute only when the CPU is idle within a sub-frame.
 
-- Safety and recovery mechanisms including a Supervisor task to handle deadline misses by resetting failed tasks.
+- **Schedule validation:** The scheduler validates the schedule table for invalid times (e.g. start ≥ end), out-of-bounds (end > sub-frame duration), overlapping HRT tasks, and invalid sub-frame IDs. Preprocessing converts absolute times to relative and checks frame boundaries. Errors are reported via `vApplicationScheduleErrorHook` and the system halts with interrupts disabled.
 
-- Trace and debugging support via a lightweight, buffered tracing module designed to record scheduler behavior with tick-level precision.
+## Implementation highlights
 
-- Automated testing framework driven by a dedicated Makefile for isolated test execution and validation.
+- **Core API:** `vStartTimelineScheduler(schedule_table, table_size, subframe_duration_ms, total_subframes)` verifies the table and starts the OS. `xUpdateTimelineScheduler()` is called from the tick hook to advance the timeline. `xPreprocessSchedule()` and `xValidateSchedule()` handle validation and relative-time conversion.
+
+- **Application hooks:** `application_hooks.c` implements `vApplicationIdleHook` to measure idle time per sub-frame (for tracing) and `vApplicationScheduleErrorHook` to log the error reason (overlap, out-of-bounds, invalid sub-frame, invalid time, or preprocessing failure) over UART and then stop the system.
+
+- **Tracing:** A buffered trace module records scheduler behavior with tick-level precision. Trace data can be emitted via UART for offline analysis. Task names are registered from the generated schedule for readable logs.
+
+- **Tooling:** The `tools/` directory contains `gen_schedule.py` and `schedule.json`. The Python script reads the JSON and generates the C schedule table and frame parameters (e.g. `g_major_frame_ms`, `g_minor_frame_ms`, `g_subframe_count`) so the main application uses a single generated schedule.
+
+## Repository layout
+
+- **FreeRTOS-Kernel:** Modified FreeRTOS kernel.
+- **config:** FreeRTOS and application configuration.
+- **device, drivers:** Target-specific and driver code.
+- **tasks:** Application tasks that are scheduled by the timeline.
+- **utils:** Shared utilities (e.g. UART, trace).
+- **testing:** Test targets; the Makefile supports isolated test execution and validation.
